@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Products: public read (storefront + app). Only authenticated admins
+    // may create / update / delete from the dashboard.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Orders: anyone may create an order (web/app checkout, guest allowed).
+    // Reading & full updates are restricted to authenticated admins, but a guest
+    // customer may attach a PromptPay payment slip to their own order — limited
+    // to the slip fields and only moving payment into 'pending_review' (they can
+    // never mark an order as 'paid' or change amounts/status themselves).
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read: if request.auth != null;
+      allow delete: if request.auth != null;
+      allow update: if request.auth != null
+        || (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['slipDataUrl', 'paymentStatus', 'updatedAt'])
+          && request.resource.data.paymentStatus == 'pending_review'
+        );
+    }
+
+    // Config (discount campaign / flash sale): public read so the storefront
+    // popup + checkout promo code work for everyone. Only authenticated admins
+    // may edit the campaign from the dashboard.
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

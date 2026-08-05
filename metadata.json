@@ -1,0 +1,6 @@
+{
+  "name": "ShopHub - ร้านค้าออนไลน์",
+  "description": "แอพขายของออนไลน์ครบวงจร มีตะกร้าสินค้า ระบบหลังบ้านอัปโหลดและจัดการสินค้า พร้อมระบบสั่งซื้อและแชทสอบถาม",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
