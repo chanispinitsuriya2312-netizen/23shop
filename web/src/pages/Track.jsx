@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { doc, getDoc } from 'firebase/firestore'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -10,7 +10,8 @@ import { useSeo } from '../lib/seo'
 const STEPS = ['Order Placed', 'Processing', 'Shipped', 'Delivered']
 
 export default function Track() {
-  const [code, setCode] = useState('')
+  const [params] = useSearchParams()
+  const [code, setCode] = useState(params.get('code') || '')
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)

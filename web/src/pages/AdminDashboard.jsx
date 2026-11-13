@@ -8,6 +8,7 @@ import Orders from './admin/Orders'
 import Slips from './admin/Slips'
 import Products from './admin/Products'
 import Coupons from './admin/Coupons'
+import Reviews from './admin/Reviews'
 import Customers from './admin/Customers'
 import Reports from './admin/Reports'
 import Campaign from './admin/Campaign'
@@ -51,6 +52,7 @@ export default function AdminDashboard() {
       {section === 'slips' && <Slips orders={orders} />}
       {section === 'products' && <Products products={products} />}
       {section === 'coupons' && <Coupons products={products} />}
+      {section === 'reviews' && <Reviews products={products} />}
       {section === 'customers' && <Customers orders={orders} />}
       {section === 'reports' && <Reports orders={orders} products={products} />}
       {section === 'campaign' && <Campaign products={products} />}

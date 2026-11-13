@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { trackEvent } from '../lib/track'
 
 const CartContext = createContext(null)
 const STORAGE_KEY = 'shophub_cart'
+const SINCE_KEY = 'shophub_cart_since'
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
@@ -11,12 +13,23 @@ export function CartProvider({ children }) {
       return []
     }
   })
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+    if (items.length > 0 && !localStorage.getItem(SINCE_KEY)) {
+      localStorage.setItem(SINCE_KEY, String(Date.now()))
+    } else if (items.length === 0) {
+      localStorage.removeItem(SINCE_KEY)
+    }
   }, [items])
 
   function add(product, qty = 1) {
+    trackEvent('AddToCart', {
+      currency: 'THB',
+      value: (Number(product.price) || 0) * qty,
+      items: [{ item_id: String(product.id ?? product.productId), item_name: product.title, price: product.price, quantity: qty }]
+    })
     setItems((prev) => {
       const key = String(product.id ?? product.productId)
       const found = prev.find((i) => String(i.id ?? i.productId) === key)
@@ -58,7 +71,18 @@ export function CartProvider({ children }) {
   const count = useMemo(() => items.reduce((s, i) => s + i.quantity, 0), [items])
   const subtotal = useMemo(() => items.reduce((s, i) => s + i.price * i.quantity, 0), [items])
 
-  const value = { items, add, setQty, remove, clear, count, subtotal }
+  const value = {
+    items,
+    add,
+    setQty,
+    remove,
+    clear,
+    count,
+    subtotal,
+    drawerOpen,
+    openDrawer: () => setDrawerOpen(true),
+    closeDrawer: () => setDrawerOpen(false)
+  }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 

@@ -4,17 +4,22 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import MediaGallery from '../components/MediaGallery'
 import ProductCard from '../components/ProductCard'
+import ReviewList from '../components/ReviewList'
+import ReviewForm from '../components/ReviewForm'
 import { subscribeProducts, productMedia } from '../lib/shop'
 import { subscribeCampaign } from '../lib/campaign'
+import { trackEvent } from '../lib/marketing'
 import { baht } from '../lib/format'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
+import { useWishlist } from '../context/WishlistContext'
 import { useSeo, seoConfig } from '../lib/seo'
 
 export default function ProductDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { add } = useCart()
+  const { has, toggle } = useWishlist()
   const toast = useToast()
   const [products, setProducts] = useState([])
   const [campaign, setCampaign] = useState(null)
@@ -49,6 +54,17 @@ export default function ProductDetail() {
     )
     return [...picked, ...sameCat].slice(0, 4)
   }, [products, product])
+
+  useEffect(() => {
+    if (!product) return
+    trackEvent('ViewContent', {
+      currency: 'THB',
+      value: Number(product.price) || 0,
+      content_ids: [String(product.id)],
+      content_name: product.title,
+      content_type: 'product'
+    })
+  }, [product?.id])
 
   // SEO: per-product title/description + JSON-LD Product structured data.
   useSeo(
@@ -167,7 +183,22 @@ export default function ProductDetail() {
             <span className="rounded-full bg-ink-100 px-3 py-1 text-xs font-medium text-ink-500">
               {product.category}
             </span>
-            <h1 className="mt-3 text-xl font-bold tracking-tight text-ink-900 sm:text-2xl">{product.title}</h1>
+            <div className="mt-3 flex items-start justify-between gap-3">
+              <h1 className="text-xl font-bold tracking-tight text-ink-900 sm:text-2xl">{product.title}</h1>
+              <button
+                onClick={() => toggle(product.id)}
+                aria-label={has(product.id) ? 'เอาออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'}
+                className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ring-1 transition ${
+                  has(product.id)
+                    ? 'bg-brand/10 text-brand ring-brand/30'
+                    : 'bg-white text-ink-400 ring-ink-200 hover:text-brand'
+                }`}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill={has(product.id) ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.9">
+                  <path d="M12 20.5C7 16.6 3 13.3 3 9.2A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9 3.2c0 4.1-4 7.4-9 11.3Z" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
 
             <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-ink-400">
               <span className="flex items-center gap-1 text-amber-500">
@@ -319,11 +350,9 @@ export default function ProductDetail() {
                   </dl>
                 )}
                 {tab === 'review' && (
-                  <div className="rounded-2xl bg-ink-50 p-5 text-center">
-                    <p className="text-2xl font-extrabold text-ink-900">⭐ {product.rating}</p>
-                    <p className="mt-1 text-ink-500">
-                      จากผู้ซื้อจริง {product.salesCount} ราย — ระบบรีวิวพร้อมรูป/วิดีโอ เร็วๆ นี้
-                    </p>
+                  <div className="space-y-5">
+                    <ReviewList productId={product.id} />
+                    <ReviewForm productId={product.id} />
                   </div>
                 )}
               </div>

@@ -51,6 +51,7 @@ export default function Footer({ store }) {
               <li><Link to="/?cat=ทั้งหมด#products" className="hover:text-brand">สินค้าทั้งหมด</Link></li>
               <li><Link to="/#sale" className="hover:text-brand">โปรโมชัน</Link></li>
               <li><Link to="/track" className="hover:text-brand">ติดตามพัสดุ</Link></li>
+              <li><Link to="/wishlist" className="hover:text-brand">สินค้าที่ถูกใจ</Link></li>
             </ul>
           </div>
 

@@ -5,11 +5,14 @@ import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import { isProductInCampaign } from '../lib/campaign'
 import { productMedia } from '../lib/shop'
+import { useWishlist } from '../context/WishlistContext'
 
 export default function ProductCard({ product, campaign, showStock = true }) {
   const { add } = useCart()
+  const { has, toggle } = useWishlist()
   const toast = useToast()
   const [hovered, setHovered] = useState(false)
+  const liked = has(product.id)
 
   const images = productMedia(product).filter((m) => m.type === 'image')
   const primary = images[0]?.url || product.imageUrl
@@ -30,7 +33,7 @@ export default function ProductCard({ product, campaign, showStock = true }) {
   const lowStock = Number(product.stock) > 0 && Number(product.stock) <= 5
 
   return (
-    <article className="group card-surface flex flex-col overflow-hidden transition duration-300 hover:shadow-card">
+    <article className="group card-surface relative flex flex-col overflow-hidden transition duration-300 hover:shadow-card">
       <Link to={`/product/${product.id}`} className="relative block">
         <div className="relative aspect-square overflow-hidden bg-ink-50">
           <img
@@ -74,6 +77,19 @@ export default function ProductCard({ product, campaign, showStock = true }) {
               {campaignLabel}
             </span>
           )}
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              toggle(product.id)
+            }}
+            aria-label={liked ? 'เอาออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'}
+            className="absolute bottom-2.5 right-2.5 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/95 text-ink-500 shadow-sm transition hover:text-brand"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.9" className={liked ? 'text-brand' : ''}>
+              <path d="M12 20.5C7 16.6 3 13.3 3 9.2A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9 3.2c0 4.1-4 7.4-9 11.3Z" strokeLinejoin="round" />
+            </svg>
+          </button>
         </div>
       </Link>
 

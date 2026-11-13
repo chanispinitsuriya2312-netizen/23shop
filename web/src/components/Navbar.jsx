@@ -1,8 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 
 export default function Navbar({ search, onSearch }) {
-  const { count } = useCart()
+  const { count, openDrawer } = useCart()
+  const { count: wishCount } = useWishlist()
   const navigate = useNavigate()
 
   return (
@@ -39,7 +41,22 @@ export default function Navbar({ search, onSearch }) {
         </div>
 
         <Link
-          to="/cart"
+          to="/wishlist"
+          className="relative hidden h-10 w-10 shrink-0 place-items-center rounded-full text-ink-700 transition hover:bg-ink-100/70 sm:grid"
+          aria-label="สินค้าที่ถูกใจ"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M12 20.5C7 16.6 3 13.3 3 9.2A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9 3.2c0 4.1-4 7.4-9 11.3Z" strokeLinejoin="round" />
+          </svg>
+          {wishCount > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-ink-900 px-1 text-[11px] font-bold text-white">
+              {wishCount}
+            </span>
+          )}
+        </Link>
+
+        <button
+          onClick={openDrawer}
           className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink-700 transition hover:bg-ink-100/70"
           aria-label="ตะกร้าสินค้า"
         >
@@ -54,7 +71,7 @@ export default function Navbar({ search, onSearch }) {
               {count}
             </span>
           )}
-        </Link>
+        </button>
 
         <Link
           to="/account/login"

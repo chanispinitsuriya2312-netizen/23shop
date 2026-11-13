@@ -6,6 +6,9 @@ import { useToast } from '../context/ToastContext'
 import { baht } from '../lib/format'
 import { createOrder } from '../lib/shop'
 import { subscribeCampaign, applyPromo, isCampaignLive } from '../lib/campaign'
+import { validateCoupon, incrementCouponUsage } from '../lib/coupons'
+import { subscribeSettings, defaultSettings } from '../lib/settings'
+import { trackEvent } from '../lib/marketing'
 import { subscribePayment, defaultPayment } from '../lib/promptpay'
 import PromptPayBox from '../components/PromptPayBox'
 
@@ -27,21 +30,38 @@ export default function Checkout() {
   const [promoInput, setPromoInput] = useState('')
   const [promo, setPromo] = useState({ ok: false, amount: 0, message: '' })
   const [payment, setPayment] = useState(defaultPayment)
+  const [settings, setSettings] = useState(defaultSettings)
 
   useEffect(() => subscribeCampaign(setCampaign), [])
   useEffect(() => subscribePayment(setPayment), [])
+  useEffect(() => subscribeSettings(setSettings), [])
+
+  useEffect(() => {
+    if (!items.length) return
+    trackEvent('InitiateCheckout', {
+      currency: 'THB',
+      value: subtotal,
+      num_items: items.reduce((s, i) => s + i.quantity, 0)
+    })
+  }, [])
 
   const isPromptPay = form.paymentMethod.includes('PromptPay')
 
-  function handleApplyPromo() {
-    const res = applyPromo(promoInput, subtotal, campaign, items)
+  async function handleApplyPromo() {
+    const code = promoInput.trim()
+    if (!code) return
+    const byCampaign = applyPromo(code, subtotal, campaign, items)
+    const res = byCampaign.ok ? byCampaign : await validateCoupon(code, subtotal)
     setPromo(res)
     if (res.ok) toast.success(res.message)
     else if (res.message) toast.error(res.message)
   }
 
   const discount = promo.ok ? promo.amount : 0
-  const shipping = subtotal > 0 && subtotal - discount < 1000 ? 40 : 0
+  const shipping =
+    subtotal > 0 && subtotal - discount < Number(settings.freeShippingMin || 0)
+      ? Number(settings.shippingFee || 0)
+      : 0
   const total = Math.max(0, subtotal - discount + shipping)
 
   function set(k, v) {
@@ -74,6 +94,18 @@ export default function Checkout() {
         }))
       })
       clear()
+      if (promo.ok && promoInput.trim()) incrementCouponUsage(promoInput)
+      trackEvent('Purchase', {
+        currency: 'THB',
+        value: total,
+        transaction_id: order.orderCode,
+        items: items.map((it) => ({
+          item_id: String(it.productId ?? it.id),
+          item_name: it.title,
+          price: it.price,
+          quantity: it.quantity
+        }))
+      })
       setDone(order)
     } catch (err) {
       setError('เกิดข้อผิดพลาดในการสั่งซื้อ: ' + (err?.message || err))
@@ -104,12 +136,20 @@ export default function Checkout() {
             <PromptPayBox payment={payment} order={done} />
           )}
 
-          <button
-            onClick={() => navigate('/')}
-            className="mt-6 rounded-2xl bg-brand px-6 py-3 font-semibold text-white"
-          >
-            กลับหน้าร้าน
-          </button>
+          <div className="mt-6 flex justify-center gap-2">
+            <button
+              onClick={() => navigate(`/track?code=${done.orderCode}`)}
+              className="rounded-2xl border-2 border-brand px-5 py-3 font-semibold text-brand"
+            >
+              ติดตามพัสดุ
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="rounded-2xl bg-brand px-6 py-3 font-semibold text-white"
+            >
+              กลับหน้าร้าน
+            </button>
+          </div>
         </main>
       </div>
     )
