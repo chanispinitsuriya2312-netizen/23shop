@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 const SITE_NAME = 'ShopHub'
 const SITE_URL = 'https://shophub-23.web.app'
 const DEFAULT_DESC = 'ShopHub ร้านค้าออนไลน์ — อิเล็กทรอนิกส์ แฟชั่น ของใช้ในบ้าน ความงาม ราคาดี ส่งไว ปลอดภัย'
-const DEFAULT_IMAGE = `${SITE_URL}/favicon.svg`
+const DEFAULT_IMAGE = `${SITE_URL}/og-image-1200.jpg`
 
 function upsertMeta(attr, key, content) {
   if (!content) return
