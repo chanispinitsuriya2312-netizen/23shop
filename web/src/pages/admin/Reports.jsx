@@ -92,7 +92,7 @@ export default function Reports({ orders, products }) {
             {top.length === 0 && <p className="py-6 text-center text-xs text-ink-400">ยังไม่มีข้อมูล</p>}
             {top.map((t, i) => (
               <div key={t.title} className="flex items-center gap-2 text-sm">
-                <span className="grid h-6 w-6 place-items-center rounded-md bg-ink-900 text-[11px] font-bold text-white">{i + 1}</span>
+                <span className="grid h-6 w-6 place-items-center rounded-md bg-panel text-[11px] font-bold text-white">{i + 1}</span>
                 <span className="line-clamp-1 flex-1 text-xs text-ink-700">{t.title}</span>
                 <span className="text-xs text-ink-400">x{t.quantity}</span>
                 <span className="text-xs font-bold text-ink-900">{baht(t.revenue)}</span>

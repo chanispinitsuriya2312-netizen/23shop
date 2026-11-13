@@ -14,7 +14,7 @@ export default function Navbar({ search, onSearch }) {
     <header className="sticky top-0 z-40 border-b border-ink-100 bg-cream/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4">
         <Link to="/" className="flex shrink-0 items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink-900 text-sm font-bold text-white">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-panel text-sm font-bold text-white">
             S<span className="text-brand">.</span>
           </span>
           <span className="hidden text-lg font-extrabold tracking-tight text-ink-900 sm:block">ShopHub</span>
@@ -52,7 +52,7 @@ export default function Navbar({ search, onSearch }) {
             <path d="M12 20.5C7 16.6 3 13.3 3 9.2A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9 3.2c0 4.1-4 7.4-9 11.3Z" strokeLinejoin="round" />
           </svg>
           {wishCount > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-ink-900 px-1 text-[11px] font-bold text-white">
+            <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-panel px-1 text-[11px] font-bold text-white">
               {wishCount}
             </span>
           )}

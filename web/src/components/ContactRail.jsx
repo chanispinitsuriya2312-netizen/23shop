@@ -47,7 +47,7 @@ export default function ContactRail() {
       <button
         onClick={() => setOpen(true)}
         aria-label="เปิดช่องทางติดต่อร้าน"
-        className="group fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-1.5 rounded-l-2xl bg-ink-900 py-3.5 pl-2.5 pr-2 text-white shadow-lift ring-1 ring-white/10 transition hover:bg-brand sm:flex"
+        className="group fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-1.5 rounded-l-2xl bg-panel py-3.5 pl-2.5 pr-2 text-white shadow-lift ring-1 ring-white/10 transition hover:bg-brand sm:flex"
       >
         <span className="absolute -left-1.5 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-white/25 opacity-0 transition group-hover:opacity-100" />
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">

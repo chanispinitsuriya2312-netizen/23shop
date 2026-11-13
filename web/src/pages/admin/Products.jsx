@@ -201,7 +201,7 @@ function CategoryPanel() {
           placeholder="เพิ่มหมวดหมู่ใหม่ เช่น สัตว์เลี้ยง"
           className="input max-w-xs"
         />
-        <button onClick={add} className="shrink-0 rounded-xl bg-ink-900 px-4 py-2 text-sm font-semibold text-white">เพิ่ม</button>
+        <button onClick={add} className="shrink-0 rounded-xl bg-panel px-4 py-2 text-sm font-semibold text-white">เพิ่ม</button>
         {msg && <span className="self-center text-xs font-medium text-green-600">{msg}</span>}
       </div>
     </div>

@@ -33,7 +33,7 @@ export default function Reviews({ products }) {
             <button
               key={k}
               onClick={() => setFilter(k)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium ${filter === k ? 'bg-ink-900 text-white' : 'bg-white text-ink-500 ring-1 ring-ink-200'}`}
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium ${filter === k ? 'bg-panel text-white' : 'bg-white text-ink-500 ring-1 ring-ink-200'}`}
             >
               {label}
             </button>

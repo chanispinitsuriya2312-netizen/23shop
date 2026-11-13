@@ -137,7 +137,7 @@ export default function Cart() {
                           add(p, 1)
                           toast.success(`เพิ่ม "${p.title}" ลงตะกร้าแล้ว`)
                         }}
-                        className="shrink-0 rounded-lg bg-ink-900 px-3 py-2 text-xs font-semibold text-white hover:bg-brand"
+                        className="shrink-0 rounded-lg bg-panel px-3 py-2 text-xs font-semibold text-white hover:bg-brand"
                       >
                         + ใส่ตะกร้า
                       </button>

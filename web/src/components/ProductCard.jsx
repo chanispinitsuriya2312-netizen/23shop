@@ -61,13 +61,13 @@ export default function ProductCard({ product, campaign, showStock = true }) {
           )}
           {soldOut && (
             <div className="absolute inset-0 grid place-items-center bg-white/60 backdrop-blur-[1px]">
-              <span className="rounded-full bg-ink-900 px-3 py-1 text-xs font-semibold text-white">
+              <span className="rounded-full bg-panel px-3 py-1 text-xs font-semibold text-white">
                 สินค้าหมด
               </span>
             </div>
           )}
           {discount > 0 && !soldOut && (
-            <span className="absolute left-2.5 top-2.5 rounded-md bg-ink-900 px-2 py-0.5 text-[11px] font-bold tracking-wide text-white">
+            <span className="absolute left-2.5 top-2.5 rounded-md bg-panel px-2 py-0.5 text-[11px] font-bold tracking-wide text-white">
               −{discount}%
             </span>
           )}
@@ -134,7 +134,7 @@ export default function ProductCard({ product, campaign, showStock = true }) {
             toast.success(`เพิ่ม "${product.title}" ลงตะกร้าแล้ว`)
           }}
           disabled={soldOut}
-          className="mt-3 w-full rounded-xl bg-ink-900 py-2.5 text-sm font-semibold text-white shadow-press transition duration-150 hover:-translate-y-0.5 hover:bg-brand hover:shadow-lift active:translate-y-0 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-ink-200 disabled:text-ink-400 disabled:shadow-none"
+          className="mt-3 w-full rounded-xl bg-panel py-2.5 text-sm font-semibold text-white shadow-press transition duration-150 hover:-translate-y-0.5 hover:bg-brand hover:shadow-lift active:translate-y-0 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-ink-200 disabled:text-ink-400 disabled:shadow-none"
         >
           {soldOut ? 'สินค้าหมด' : 'เพิ่มลงตะกร้า'}
         </button>

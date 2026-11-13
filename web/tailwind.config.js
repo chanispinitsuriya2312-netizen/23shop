@@ -24,7 +24,10 @@ export default {
           100: 'rgb(var(--ink-100) / <alpha-value>)',
           50: 'rgb(var(--ink-50) / <alpha-value>)'
         },
-        cream: 'rgb(var(--cream) / <alpha-value>)'
+        cream: 'rgb(var(--cream) / <alpha-value>)',
+        // Solid dark surfaces (buttons, chips, announcement bars) stay dark in
+        // both themes; ink-* flips with the theme and is meant for text/lines.
+        panel: 'rgb(var(--panel) / <alpha-value>)'
       },
       fontFamily: {
         sans: ['Anuphan', 'Inter', 'Noto Sans Thai', 'system-ui', 'sans-serif']

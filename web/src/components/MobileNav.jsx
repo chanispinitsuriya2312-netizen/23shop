@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 
@@ -12,16 +13,37 @@ export default function MobileNav() {
   if (HIDDEN_PREFIXES.some((p) => pathname.startsWith(p))) return null
 
   const item = (active) =>
-    `relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium leading-none transition ${
-      active ? 'text-brand' : 'text-ink-500'
+    `relative flex flex-1 flex-col items-center gap-1 rounded-[1.35rem] px-1 pb-1.5 pt-2 text-[10.5px] font-semibold leading-none transition-colors ${
+      active ? 'text-brand' : 'text-ink-500 hover:text-ink-700'
     }`
 
-  const icon = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }
+  const pill = (active) =>
+    active ? (
+      <motion.span
+        layoutId="mobile-nav-pill"
+        className="absolute inset-0 -z-10 rounded-[1.35rem] bg-brand/10 ring-1 ring-brand/15"
+        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+      />
+    ) : null
+
+  const icon = { width: 21, height: 21, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }
+
+  const badge = (value, tone) =>
+    value > 0 && (
+      <span
+        className={`absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] font-bold leading-none ${
+          tone === 'brand' ? 'bg-brand text-white' : 'bg-panel text-white'
+        }`}
+      >
+        {value}
+      </span>
+    )
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-100 bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_-18px_rgba(23,19,16,.45)] backdrop-blur-xl lg:hidden">
-      <div className="mx-auto flex max-w-md items-stretch">
+    <nav className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden">
+      <div className="mx-auto flex max-w-sm items-stretch gap-0.5 rounded-[1.7rem] border border-ink-100 bg-white/90 p-1.5 shadow-lift backdrop-blur-xl">
         <Link to="/" className={item(pathname === '/')}>
+          {pill(pathname === '/')}
           <svg {...icon}>
             <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" strokeLinejoin="round" />
           </svg>
@@ -37,27 +59,24 @@ export default function MobileNav() {
           สินค้า
         </Link>
         <button onClick={openDrawer} className={item(false)}>
-          <svg {...icon}>
-            <path d="M6 7h14l-1.4 8.2a2 2 0 0 1-2 1.8H9.4a2 2 0 0 1-2-1.7L6 7Z" strokeLinejoin="round" />
-            <path d="M6 7 5 4H2.5" strokeLinecap="round" />
-          </svg>
+          <span className="relative">
+            <svg {...icon}>
+              <path d="M6 7h14l-1.4 8.2a2 2 0 0 1-2 1.8H9.4a2 2 0 0 1-2-1.7L6 7Z" strokeLinejoin="round" />
+              <path d="M6 7 5 4H2.5" strokeLinecap="round" />
+            </svg>
+            {badge(count, 'brand')}
+          </span>
           ตะกร้า
-          {count > 0 && (
-            <span className="absolute right-[24%] top-1 grid h-4 min-w-4 place-items-center rounded-full bg-brand px-1 text-[9px] font-bold leading-none text-white">
-              {count}
-            </span>
-          )}
         </button>
         <Link to="/wishlist" className={item(pathname === '/wishlist')}>
-          <svg {...icon} fill={pathname === '/wishlist' ? 'currentColor' : 'none'}>
-            <path d="M12 20.5C7 16.6 3 13.3 3 9.2A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9 3.2c0 4.1-4 7.4-9 11.3Z" strokeLinejoin="round" />
-          </svg>
+          {pill(pathname === '/wishlist')}
+          <span className="relative">
+            <svg {...icon} fill={pathname === '/wishlist' ? 'currentColor' : 'none'}>
+              <path d="M12 20.5C7 16.6 3 13.3 3 9.2A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 9 3.2c0 4.1-4 7.4-9 11.3Z" strokeLinejoin="round" />
+            </svg>
+            {badge(wishCount, 'panel')}
+          </span>
           ถูกใจ
-          {wishCount > 0 && (
-            <span className="absolute right-[24%] top-1 grid h-4 min-w-4 place-items-center rounded-full bg-ink-900 px-1 text-[9px] font-bold leading-none text-white dark:text-[#171310]">
-              {wishCount}
-            </span>
-          )}
         </Link>
         <button onClick={() => window.dispatchEvent(new Event('shophub:contact'))} className={item(false)}>
           <svg {...icon}>

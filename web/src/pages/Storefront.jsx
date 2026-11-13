@@ -94,7 +94,7 @@ export default function Storefront() {
   return (
     <div className="min-h-screen">
       <FlashSalePopup />
-      <div className="bg-ink-900 px-4 py-2 text-center text-xs font-medium tracking-wide text-white/90">
+      <div className="bg-panel px-4 py-2 text-center text-xs font-medium tracking-wide text-white/90">
         {settings.announcement || 'ส่งฟรีเมื่อซื้อครบ ฿1,000 · จัดส่งทั่วไทย 1–3 วันทำการ'}
       </div>
       <Navbar search={search} onSearch={setSearch} />
@@ -148,7 +148,7 @@ export default function Storefront() {
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="flex flex-col justify-between rounded-3xl bg-ink-900 p-3 text-white shadow-soft">
+                  <div className="flex flex-col justify-between rounded-3xl bg-panel p-3 text-white shadow-soft">
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">แนะนำ</span>
                     <div>
                       <p className="line-clamp-2 text-xs font-medium leading-snug">{hero.title}</p>
@@ -189,7 +189,7 @@ export default function Storefront() {
                   [cd.minutes, 'นาที'],
                   [cd.seconds, 'วินาที']
                 ].map(([v, label]) => (
-                  <div key={label} className="min-w-[3.4rem] rounded-xl bg-ink-900 px-2 py-1.5 text-center text-white shadow-press">
+                  <div key={label} className="min-w-[3.4rem] rounded-xl bg-panel px-2 py-1.5 text-center text-white shadow-press">
                     <p className="text-lg font-extrabold leading-none tabular-nums">{pad(v)}</p>
                     <p className="mt-0.5 text-[10px] text-white/50">{label}</p>
                   </div>

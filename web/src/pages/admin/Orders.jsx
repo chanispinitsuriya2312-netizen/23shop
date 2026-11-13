@@ -181,7 +181,7 @@ export default function Orders({ orders }) {
                         }
                       }}
                       disabled={busy}
-                      className="rounded-lg bg-ink-900 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-brand disabled:opacity-50"
+                      className="rounded-lg bg-panel px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-brand disabled:opacity-50"
                     >
                       →
                     </button>

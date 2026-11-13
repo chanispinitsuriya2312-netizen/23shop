@@ -75,7 +75,7 @@ export default function ReviewForm({ productId }) {
         {photos.map((p, i) => (
           <div key={i} className="relative">
             <img src={p} alt="" className="h-14 w-14 rounded-lg object-cover" />
-            <button type="button" onClick={() => setPhotos((ph) => ph.filter((_, x) => x !== i))} className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-ink-900 text-[10px] text-white">
+            <button type="button" onClick={() => setPhotos((ph) => ph.filter((_, x) => x !== i))} className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-panel text-[10px] text-white">
               ✕
             </button>
           </div>

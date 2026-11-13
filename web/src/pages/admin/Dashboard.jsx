@@ -43,7 +43,7 @@ export default function Dashboard({ orders, products, onGo }) {
                 <button
                   key={d}
                   onClick={() => setRange(d)}
-                  className={`rounded-lg px-2.5 py-1 text-xs font-medium ${range === d ? 'bg-ink-900 text-white' : 'bg-ink-50 text-ink-500'}`}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-medium ${range === d ? 'bg-panel text-white' : 'bg-ink-50 text-ink-500'}`}
                 >
                   {d} วัน
                 </button>
@@ -115,7 +115,7 @@ export default function Dashboard({ orders, products, onGo }) {
             {top.length === 0 && <p className="py-6 text-center text-xs text-ink-400">ยังไม่มีข้อมูลการขาย</p>}
             {top.map((t, i) => (
               <div key={t.title} className="flex items-center gap-2 px-2 py-1.5">
-                <span className="grid h-6 w-6 place-items-center rounded-md bg-ink-900 text-[11px] font-bold text-white">{i + 1}</span>
+                <span className="grid h-6 w-6 place-items-center rounded-md bg-panel text-[11px] font-bold text-white">{i + 1}</span>
                 <span className="line-clamp-1 flex-1 text-xs font-medium text-ink-700">{t.title}</span>
                 <span className="text-[11px] text-ink-400">x{t.quantity}</span>
                 <span className="text-xs font-bold text-ink-900">{baht(t.revenue)}</span>

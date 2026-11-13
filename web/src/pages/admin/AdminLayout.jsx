@@ -96,7 +96,7 @@ export default function AdminLayout({ user, section, onSection, badges = {}, chi
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
           <aside className="absolute inset-y-0 left-0 w-72 overflow-y-auto bg-white p-4 shadow-2xl">
             <div className="mb-4 flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink-900 text-sm font-bold text-white">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-panel text-sm font-bold text-white">
                 S<span className="text-brand">.</span>
               </span>
               <div className="min-w-0">
@@ -113,7 +113,7 @@ export default function AdminLayout({ user, section, onSection, badges = {}, chi
         {/* Desktop sidebar */}
         <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-ink-100 bg-white p-4 lg:flex">
           <div className="mb-5 flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink-900 text-sm font-bold text-white">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-panel text-sm font-bold text-white">
               S<span className="text-brand">.</span>
             </span>
             <div className="min-w-0">
@@ -128,7 +128,7 @@ export default function AdminLayout({ user, section, onSection, badges = {}, chi
             </button>
             <button
               onClick={() => logout().then(() => navigate('/admin/login'))}
-              className="w-full rounded-xl bg-ink-900 px-3 py-2 text-sm font-medium text-white hover:bg-ink-800"
+              className="w-full rounded-xl bg-panel px-3 py-2 text-sm font-medium text-white hover:bg-white/10"
             >
               ออกจากระบบ
             </button>
