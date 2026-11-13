@@ -9,6 +9,7 @@ import ReviewForm from '../components/ReviewForm'
 import { subscribeProducts, productMedia } from '../lib/shop'
 import { subscribeCampaign } from '../lib/campaign'
 import { trackEvent } from '../lib/marketing'
+import { subscribeApprovedReviews, reviewStats } from '../lib/reviews'
 import { baht } from '../lib/format'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
@@ -27,6 +28,7 @@ export default function ProductDetail() {
   const [added, setAdded] = useState(false)
   const [tab, setTab] = useState('detail')
   const [expanded, setExpanded] = useState(false)
+  const [reviews, setReviews] = useState([])
 
   useEffect(() => {
     const unsub = subscribeProducts(setProducts)
@@ -36,6 +38,14 @@ export default function ProductDetail() {
 
   const product = products.find((p) => String(p.id) === String(id))
   const media = useMemo(() => (product ? productMedia(product) : []), [product])
+
+  useEffect(() => {
+    if (!product) return undefined
+    setReviews([])
+    return subscribeApprovedReviews(product.id, setReviews)
+  }, [product?.id])
+
+  const rStats = reviewStats(reviews)
 
   const discount =
     product && product.originalPrice > product.price
@@ -84,13 +94,19 @@ export default function ProductDetail() {
             category: product.category,
             sku: product.sku || `SKU-${product.id}`,
             brand: { '@type': 'Brand', name: seoConfig.SITE_NAME },
-            aggregateRating: product.rating
+            aggregateRating: rStats.count
               ? {
                   '@type': 'AggregateRating',
-                  ratingValue: product.rating,
-                  reviewCount: Math.max(1, Number(product.salesCount) || 1)
+                  ratingValue: rStats.avg,
+                  reviewCount: rStats.count
                 }
-              : undefined,
+              : product.rating
+                ? {
+                    '@type': 'AggregateRating',
+                    ratingValue: product.rating,
+                    reviewCount: Math.max(1, Number(product.salesCount) || 1)
+                  }
+                : undefined,
             offers: {
               '@type': 'Offer',
               url: `${seoConfig.SITE_URL}/product/${product.id}`,
@@ -351,7 +367,7 @@ export default function ProductDetail() {
                 )}
                 {tab === 'review' && (
                   <div className="space-y-5">
-                    <ReviewList productId={product.id} />
+                    <ReviewList productId={product.id} reviews={reviews} />
                     <ReviewForm productId={product.id} />
                   </div>
                 )}

@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { subscribeProducts, upsertProduct, deleteProduct, productMedia } from '../../lib/shop'
+import { subscribeCategories, saveCategories } from '../../lib/categories'
 import { baht } from '../../lib/format'
 import { downloadCsv } from '../../lib/adminStats'
 
@@ -112,6 +113,8 @@ export default function Products({ products }) {
         {msg && <span className="text-xs font-medium text-green-600">{msg}</span>}
       </div>
 
+      <CategoryPanel />
+
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((p) => (
           <div key={p.id} className="card-surface flex gap-3 p-3">
@@ -152,6 +155,55 @@ export default function Products({ products }) {
       </div>
 
       {editing && <ProductEditor product={editing} products={products} onClose={() => setEditing(null)} />}
+    </div>
+  )
+}
+
+function CategoryPanel() {
+  const [list, setList] = useState([])
+  const [draft, setDraft] = useState('')
+  const [msg, setMsg] = useState('')
+
+  useEffect(() => subscribeCategories(setList), [])
+
+  async function add() {
+    const value = draft.trim()
+    if (!value) return
+    const next = [...new Set([...list, value])]
+    setDraft('')
+    await saveCategories(next)
+    setMsg('บันทึกแล้ว')
+    setTimeout(() => setMsg(''), 2000)
+  }
+
+  async function remove(c) {
+    if (!confirm(`ลบหมวดหมู่ "${c}" ? (สินค้าเดิมยังอยู่)`)) return
+    await saveCategories(list.filter((x) => x !== c))
+  }
+
+  return (
+    <div className="card-surface p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-semibold text-ink-700">หมวดหมู่หน้าร้าน</span>
+        {list.length === 0 && <span className="text-xs text-ink-400">ยังไม่มีหมวดที่กำหนดเอง — หน้าร้านใช้หมวดจากสินค้าและค่าเริ่มต้น</span>}
+        {list.map((c) => (
+          <span key={c} className="inline-flex items-center gap-1 rounded-full bg-ink-100 px-3 py-1 text-xs font-medium text-ink-600">
+            {c}
+            <button onClick={() => remove(c)} className="text-ink-400 hover:text-red-500" aria-label={`ลบ ${c}`}>✕</button>
+          </span>
+        ))}
+      </div>
+      <div className="mt-2 flex gap-2">
+        <input
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && add()}
+          placeholder="เพิ่มหมวดหมู่ใหม่ เช่น สัตว์เลี้ยง"
+          className="input max-w-xs"
+        />
+        <button onClick={add} className="shrink-0 rounded-xl bg-ink-900 px-4 py-2 text-sm font-semibold text-white">เพิ่ม</button>
+        {msg && <span className="self-center text-xs font-medium text-green-600">{msg}</span>}
+      </div>
     </div>
   )
 }

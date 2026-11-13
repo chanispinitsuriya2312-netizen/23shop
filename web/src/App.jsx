@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 
 const Storefront = lazy(() => import('./pages/Storefront'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
@@ -37,13 +38,21 @@ function PageLoader() {
 
 export default function App() {
   const location = useLocation()
+  const reduce = useReducedMotion()
 
   return (
     <>
       <ScrollToTop />
-      <div key={location.pathname} className="page-enter">
-        <Suspense fallback={<PageLoader />}>
-          <Routes location={location}>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduce ? undefined : { opacity: 0, transition: { duration: 0.12 } }}
+          transition={{ duration: reduce ? 0 : 0.22, ease: 'easeOut' }}
+        >
+          <Suspense fallback={<PageLoader />}>
+            <Routes location={location}>
           {/* โซนลูกค้า (Storefront) */}
           <Route path="/" element={<Storefront />} />
           <Route path="/product/:id" element={<ProductDetail />} />
@@ -66,8 +75,9 @@ export default function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        </Suspense>
-      </div>
+          </Suspense>
+        </motion.div>
+      </AnimatePresence>
     </>
   )
 }

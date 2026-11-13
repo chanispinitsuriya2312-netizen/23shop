@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react'
 import { subscribeApprovedReviews, reviewStats } from '../lib/reviews'
 import { formatDate } from '../lib/format'
 
-export default function ReviewList({ productId }) {
-  const [reviews, setReviews] = useState([])
+export default function ReviewList({ productId, reviews: given }) {
+  const [fetched, setFetched] = useState([])
 
   useEffect(() => {
-    setReviews([])
-    return subscribeApprovedReviews(productId, setReviews)
-  }, [productId])
+    if (given) return undefined
+    setFetched([])
+    return subscribeApprovedReviews(productId, setFetched)
+  }, [productId, given])
+
+  const reviews = given || fetched
 
   if (reviews.length === 0) {
     return (

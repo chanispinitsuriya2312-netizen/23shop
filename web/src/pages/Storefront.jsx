@@ -8,6 +8,7 @@ import { SkeletonGrid } from '../components/SkeletonCard'
 import { subscribeProducts, productMedia } from '../lib/shop'
 import { subscribeCampaign, isCampaignLive, countdownParts } from '../lib/campaign'
 import { subscribeSettings, defaultSettings } from '../lib/settings'
+import { subscribeCategories } from '../lib/categories'
 import { categories } from '../data/seedProducts'
 import { useSeo, seoConfig } from '../lib/seo'
 import { baht } from '../lib/format'
@@ -24,6 +25,7 @@ export default function Storefront() {
   const [products, setProducts] = useState([])
   const [campaign, setCampaign] = useState(null)
   const [settings, setSettings] = useState(defaultSettings)
+  const [extraCats, setExtraCats] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [cat, setCat] = useState(params.get('cat') || 'ทั้งหมด')
@@ -32,6 +34,7 @@ export default function Storefront() {
 
   useEffect(() => subscribeCampaign(setCampaign), [])
   useEffect(() => subscribeSettings(setSettings), [])
+  useEffect(() => subscribeCategories(setExtraCats), [])
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(t)
@@ -160,7 +163,7 @@ export default function Storefront() {
 
         {/* Categories */}
         <div className="mt-6 flex gap-2 overflow-x-auto no-scrollbar pb-1" id="categories">
-          {categories.map((c) => (
+          {[...new Set([...categories, ...extraCats])].map((c) => (
             <button
               key={c}
               onClick={() => setCat(c)}
@@ -242,13 +245,14 @@ export default function Storefront() {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {filtered.map((p) => (
-                  <ProductCard
-                    key={p.id}
-                    product={p}
-                    campaign={campaign}
-                    showStock={settings.showStockOnCard}
-                  />
+                {filtered.map((p, i) => (
+                  <div key={p.id} className="reveal" style={{ animationDelay: `${Math.min(i, 12) * 35}ms` }}>
+                    <ProductCard
+                      product={p}
+                      campaign={campaign}
+                      showStock={settings.showStockOnCard}
+                    />
+                  </div>
                 ))}
               </div>
             )}

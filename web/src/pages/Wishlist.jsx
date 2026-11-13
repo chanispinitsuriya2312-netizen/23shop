@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ProductCard from '../components/ProductCard'
+import { SkeletonGrid } from '../components/SkeletonCard'
 import { useWishlist } from '../context/WishlistContext'
 import { subscribeProducts } from '../lib/shop'
 import { subscribeCampaign } from '../lib/campaign'
@@ -11,9 +12,17 @@ import { useSeo } from '../lib/seo'
 export default function Wishlist() {
   const { ids } = useWishlist()
   const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
   const [campaign, setCampaign] = useState(null)
 
-  useEffect(() => subscribeProducts(setProducts), [])
+  useEffect(
+    () =>
+      subscribeProducts((list) => {
+        setProducts(list)
+        setLoading(false)
+      }),
+    []
+  )
   useEffect(() => subscribeCampaign(setCampaign), [])
   useSeo({ title: 'สินค้าที่ถูกใจ', canonical: '/wishlist' })
 
@@ -26,7 +35,11 @@ export default function Wishlist() {
         <p className="eyebrow">Wishlist</p>
         <h1 className="mt-1 text-2xl font-extrabold tracking-tight">สินค้าที่ถูกใจ</h1>
 
-        {liked.length === 0 ? (
+        {loading ? (
+          <div className="mt-5">
+            <SkeletonGrid count={4} />
+          </div>
+        ) : liked.length === 0 ? (
           <div className="mt-16 text-center">
             <p className="text-ink-400">ยังไม่มีสินค้าที่ถูกใจ — กดรูปหัวใจบนการ์ดสินค้าเพื่อเก็บไว้</p>
             <Link to="/" className="btn-primary mt-4 inline-block px-5 py-2.5">เลือกซื้อสินค้า</Link>
