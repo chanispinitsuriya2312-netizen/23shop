@@ -1,10 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
+import { useTheme } from '../lib/useTheme'
 
 export default function Navbar({ search, onSearch }) {
   const { count, openDrawer } = useCart()
   const { count: wishCount } = useWishlist()
+  const { theme, toggle } = useTheme()
   const navigate = useNavigate()
 
   return (
@@ -67,9 +70,32 @@ export default function Navbar({ search, onSearch }) {
             <circle cx="16.5" cy="20" r="1.2" fill="currentColor" stroke="none" />
           </svg>
           {count > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-brand px-1 text-[11px] font-bold text-white">
+            <motion.span
+              key={count}
+              initial={{ scale: 0.5 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 18 }}
+              className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-brand px-1 text-[11px] font-bold text-white"
+            >
               {count}
-            </span>
+            </motion.span>
+          )}
+        </button>
+
+        <button
+          onClick={toggle}
+          aria-label={theme === 'dark' ? 'สลับเป็นโหมดสว่าง' : 'สลับเป็นโหมดมืด'}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-ink-700 transition hover:bg-ink-100/70"
+        >
+          {theme === 'dark' ? (
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" strokeLinejoin="round" />
+            </svg>
           )}
         </button>
 

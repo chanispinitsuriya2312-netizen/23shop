@@ -2,6 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens (space-separated RGB so Tailwind opacity modifiers work) */
+:root {
+  --ink-900: 23 19 16;
+  --ink-800: 43 37 33;
+  --ink-700: 63 56 51;
+  --ink-600: 87 80 74;
+  --ink-500: 111 104 97;
+  --ink-400: 143 136 129;
+  --ink-300: 180 174 166;
+  --ink-200: 217 212 205;
+  --ink-100: 236 234 230;
+  --ink-50: 246 245 242;
+  --cream: 250 248 245;
+  --surface: 255 255 255;
+}
+.dark {
+  --ink-900: 245 242 236;
+  --ink-800: 233 228 220;
+  --ink-700: 216 209 199;
+  --ink-600: 190 183 174;
+  --ink-500: 160 152 142;
+  --ink-400: 132 124 114;
+  --ink-300: 96 90 82;
+  --ink-200: 58 53 48;
+  --ink-100: 42 38 34;
+  --ink-50: 33 30 27;
+  --cream: 18 16 14;
+  --surface: 29 25 22;
+}
+
+/* Surfaces and inverted chips that use literal `white`/dark fills */
+.dark .bg-white {
+  background-color: rgb(var(--surface));
+}
+.dark .bg-white\/95 {
+  background-color: rgb(var(--surface) / 0.95);
+}
+.dark .bg-white\/60 {
+  background-color: rgb(var(--surface) / 0.6);
+}
+.dark .card-surface,
+.dark .input,
+.dark .btn-outline,
+.dark .chip {
+  background-color: rgb(var(--surface));
+}
+.dark .bg-ink-900,
+.dark .bg-ink-900.text-white,
+.dark .btn-primary {
+  background-color: rgb(240 235 227);
+  color: #171310;
+}
+.dark .btn-primary:hover {
+  background-color: #ff5722;
+  color: #fff;
+}
+.dark .shadow-card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -18px rgba(0, 0, 0, 0.6);
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
@@ -16,6 +76,11 @@
   }
   :focus-visible {
     @apply outline-none ring-2 ring-brand/50 ring-offset-2 ring-offset-cream;
+  }
+  @media (max-width: 1023px) {
+    body {
+      padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+    }
   }
 }
 
@@ -70,6 +135,13 @@
 @keyframes drawerIn {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-enter {
+  animation: pageIn 0.24s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {

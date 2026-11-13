@@ -37,6 +37,20 @@ export default function Checkout() {
   useEffect(() => subscribeSettings(setSettings), [])
 
   useEffect(() => {
+    if (!done) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    import('canvas-confetti').then(({ default: confetti }) => {
+      confetti({
+        particleCount: 90,
+        spread: 72,
+        origin: { y: 0.32 },
+        colors: ['#ff5722', '#171310', '#f5f2ea', '#ff8a65'],
+        disableForReducedMotion: true
+      })
+    })
+  }, [done])
+
+  useEffect(() => {
     if (!items.length) return
     trackEvent('InitiateCheckout', {
       currency: 'THB',

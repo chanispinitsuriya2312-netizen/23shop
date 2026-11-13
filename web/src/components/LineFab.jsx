@@ -17,7 +17,7 @@ export default function LineFab() {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-5 left-4 z-40 grid h-12 w-12 place-items-center rounded-full bg-[#06c755] text-white shadow-lg transition hover:scale-105 hover:bg-[#05b34c]"
+      className="fixed bottom-5 left-4 z-40 hidden h-12 w-12 place-items-center rounded-full bg-[#06c755] text-white shadow-lg transition hover:scale-105 hover:bg-[#05b34c] sm:grid"
       aria-label="แชทกับร้านทาง LINE"
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">

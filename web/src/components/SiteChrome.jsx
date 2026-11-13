@@ -2,6 +2,7 @@ import { useMarketing } from '../lib/marketing'
 import CartDrawer from './CartDrawer'
 import LineFab from './LineFab'
 import AbandonedCart from './AbandonedCart'
+import MobileNav from './MobileNav'
 
 export default function SiteChrome() {
   useMarketing()
@@ -10,6 +11,7 @@ export default function SiteChrome() {
       <CartDrawer />
       <LineFab />
       <AbandonedCart />
+      <MobileNav />
     </>
   )
 }

@@ -36,11 +36,14 @@ function PageLoader() {
 }
 
 export default function App() {
+  const location = useLocation()
+
   return (
     <>
       <ScrollToTop />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
+      <div key={location.pathname} className="page-enter">
+        <Suspense fallback={<PageLoader />}>
+          <Routes location={location}>
           {/* โซนลูกค้า (Storefront) */}
           <Route path="/" element={<Storefront />} />
           <Route path="/product/:id" element={<ProductDetail />} />
@@ -63,7 +66,8 @@ export default function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </Suspense>
+        </Suspense>
+      </div>
     </>
   )
 }

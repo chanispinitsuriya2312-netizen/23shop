@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { baht } from '../lib/format'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
@@ -33,7 +34,11 @@ export default function ProductCard({ product, campaign, showStock = true }) {
   const lowStock = Number(product.stock) > 0 && Number(product.stock) <= 5
 
   return (
-    <article className="group card-surface relative flex flex-col overflow-hidden transition duration-300 hover:shadow-card">
+    <motion.article
+      whileHover={{ y: -4 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 26 }}
+      className="group card-surface relative flex flex-col overflow-hidden hover:shadow-card"
+    >
       <Link to={`/product/${product.id}`} className="relative block">
         <div className="relative aspect-square overflow-hidden bg-ink-50">
           <img
@@ -134,6 +139,6 @@ export default function ProductCard({ product, campaign, showStock = true }) {
           {soldOut ? 'สินค้าหมด' : 'เพิ่มลงตะกร้า'}
         </button>
       </div>
-    </article>
+    </motion.article>
   )
 }

@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import { baht } from '../lib/format'
 
@@ -8,14 +9,32 @@ export default function CartDrawer() {
   const { items, subtotal, count, setQty, remove, drawerOpen, closeDrawer } = useCart()
   const navigate = useNavigate()
 
-  if (!drawerOpen) return null
-
   const shipping = subtotal > 0 && subtotal < FREE_SHIP_MIN ? 40 : 0
 
   return (
-    <div className="fixed inset-0 z-[60]">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={closeDrawer} />
-      <aside className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-2xl animate-[drawerIn_.28s_ease-out]">
+    <AnimatePresence>
+      {drawerOpen && (
+        <motion.div
+          key="cart-drawer"
+          className="fixed inset-0 z-[60]"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 1 }}
+        >
+          <motion.div
+            className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeDrawer}
+          />
+          <motion.aside
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+            className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-2xl"
+          >
         <div className="flex items-center justify-between border-b border-ink-100 px-4 py-3.5">
           <p className="font-extrabold text-ink-900">ตะกร้าสินค้า {count > 0 && `(${count})`}</p>
           <button onClick={closeDrawer} className="grid h-9 w-9 place-items-center rounded-full text-ink-400 hover:bg-ink-100" aria-label="ปิด">
@@ -87,7 +106,9 @@ export default function CartDrawer() {
             </div>
           </>
         )}
-      </aside>
-    </div>
+          </motion.aside>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

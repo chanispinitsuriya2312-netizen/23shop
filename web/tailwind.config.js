@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -9,19 +10,21 @@ export default {
           dark: '#e64a19',
           light: '#ff8a65'
         },
+        // Warm neutral scale driven by CSS variables so the same utilities
+        // work in both light and dark themes.
         ink: {
-          900: '#171310',
-          800: '#2b2521',
-          700: '#3f3833',
-          600: '#57504a',
-          500: '#6f6861',
-          400: '#8f8881',
-          300: '#b4aea6',
-          200: '#d9d4cd',
-          100: '#eceae6',
-          50: '#f6f5f2'
+          900: 'rgb(var(--ink-900) / <alpha-value>)',
+          800: 'rgb(var(--ink-800) / <alpha-value>)',
+          700: 'rgb(var(--ink-700) / <alpha-value>)',
+          600: 'rgb(var(--ink-600) / <alpha-value>)',
+          500: 'rgb(var(--ink-500) / <alpha-value>)',
+          400: 'rgb(var(--ink-400) / <alpha-value>)',
+          300: 'rgb(var(--ink-300) / <alpha-value>)',
+          200: 'rgb(var(--ink-200) / <alpha-value>)',
+          100: 'rgb(var(--ink-100) / <alpha-value>)',
+          50: 'rgb(var(--ink-50) / <alpha-value>)'
         },
-        cream: '#faf8f5'
+        cream: 'rgb(var(--cream) / <alpha-value>)'
       },
       fontFamily: {
         sans: ['Anuphan', 'Inter', 'Noto Sans Thai', 'system-ui', 'sans-serif']
