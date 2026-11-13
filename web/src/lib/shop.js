@@ -54,6 +54,7 @@ export async function upsertProduct(product) {
     isFeatured: !!product.isFeatured,
     isAvailable: (Number(product.stock) || 0) > 0,
     sku: product.sku || `SKU-${id}`,
+    relatedIds: Array.isArray(product.relatedIds) ? product.relatedIds.map(String) : [],
     updatedAt: Date.now(),
     createdAt: product.createdAt || Date.now()
   }
@@ -141,6 +142,7 @@ export async function createOrder(order) {
     promoCode: order.promoCode || '',
     totalAmount: Number(order.totalAmount) || 0,
     status: 'Order Placed',
+    statusHistory: [{ status: 'Order Placed', at: Date.now() }],
     // Payment tracking: 'cod' for cash on delivery, otherwise 'unpaid' until a
     // slip is attached ('pending_review') and the admin confirms ('paid').
     paymentStatus: order.paymentStatus || 'unpaid',
@@ -156,6 +158,22 @@ export async function createOrder(order) {
     }))
   }
   const ref = await addDoc(collection(db, 'orders'), payload)
+
+  // Public tracking doc (no PII) — read by /track. Ignored if rules disallow.
+  try {
+    await setDoc(doc(db, 'tracking', code), {
+      orderCode: code,
+      status: payload.status,
+      statusHistory: payload.statusHistory,
+      courier: '',
+      trackingNumber: '',
+      itemsCount: payload.items.reduce((s, it) => s + it.quantity, 0),
+      updatedAt: payload.createdAt
+    })
+  } catch (e) {
+    console.warn('[shop] tracking mirror skipped:', e?.message)
+  }
+
   return { id: ref.id, ...payload }
 }
 
