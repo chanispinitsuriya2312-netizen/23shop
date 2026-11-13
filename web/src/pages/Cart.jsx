@@ -6,21 +6,23 @@ import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import { baht } from '../lib/format'
 import { subscribeProducts } from '../lib/shop'
-
-const FREE_SHIP_MIN = 1000
-const SHIPPING_FEE = 40
+import { subscribeSettings, defaultSettings } from '../lib/settings'
 
 export default function Cart() {
   const { items, setQty, remove, subtotal, add } = useCart()
   const toast = useToast()
   const [products, setProducts] = useState([])
+  const [settings, setSettings] = useState(defaultSettings)
 
   useEffect(() => subscribeProducts(setProducts), [])
+  useEffect(() => subscribeSettings(setSettings), [])
 
-  const shipping = subtotal > 0 && subtotal < FREE_SHIP_MIN ? SHIPPING_FEE : 0
+  const freeShipMin = Number(settings.freeShippingMin) || 0
+  const shippingFee = Number(settings.shippingFee) || 0
+  const shipping = subtotal > 0 && subtotal < freeShipMin ? shippingFee : 0
   const total = subtotal + shipping
-  const remain = Math.max(0, FREE_SHIP_MIN - subtotal)
-  const progress = Math.min(100, (subtotal / FREE_SHIP_MIN) * 100)
+  const remain = Math.max(0, freeShipMin - subtotal)
+  const progress = freeShipMin > 0 ? Math.min(100, (subtotal / freeShipMin) * 100) : 100
 
   const suggests = useMemo(() => {
     const inCart = new Set(items.map((it) => String(it.id ?? it.productId)))
@@ -55,7 +57,7 @@ export default function Cart() {
                     <span className="font-semibold text-green-600">✓ คุณได้รับสิทธิ์ส่งฟรีแล้ว</span>
                   )}
                 </span>
-                <span className="text-ink-400">{baht(Math.min(subtotal, FREE_SHIP_MIN))} / {baht(FREE_SHIP_MIN)}</span>
+                <span className="text-ink-400">{baht(Math.min(subtotal, freeShipMin))} / {baht(freeShipMin)}</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-ink-100">
                 <div
