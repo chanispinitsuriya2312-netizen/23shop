@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 const SITE_NAME = 'ShopHub'
-const SITE_URL = 'https://shophub-3441a.web.app'
+const SITE_URL = 'https://shophub-23.web.app'
 const DEFAULT_DESC = 'ShopHub ร้านค้าออนไลน์ — อิเล็กทรอนิกส์ แฟชั่น ของใช้ในบ้าน ความงาม ราคาดี ส่งไว ปลอดภัย'
 const DEFAULT_IMAGE = `${SITE_URL}/favicon.svg`
 

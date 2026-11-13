@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /account
 
-Sitemap: https://shophub-3441a.web.app/sitemap.xml
+Sitemap: https://shophub-23.web.app/sitemap.xml
