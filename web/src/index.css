@@ -89,25 +89,25 @@
     @apply w-full rounded-xl border border-ink-200 bg-white px-3 py-2.5 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-brand focus:ring-2 focus:ring-brand/20;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-ink-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand active:scale-[0.98];
+    @apply inline-flex h-11 items-center justify-center rounded-xl bg-ink-900 px-5 text-sm font-semibold text-white shadow-press transition duration-150 hover:-translate-y-0.5 hover:bg-brand hover:shadow-lift active:translate-y-0 active:scale-[0.99];
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center rounded-xl border border-ink-200 bg-white px-5 py-2.5 text-sm font-semibold text-ink-700 transition hover:border-brand hover:text-brand active:scale-[0.98];
+    @apply inline-flex h-11 items-center justify-center rounded-xl border border-ink-200 bg-white px-5 text-sm font-semibold text-ink-700 shadow-soft transition duration-150 hover:-translate-y-0.5 hover:border-brand hover:text-brand hover:shadow-card active:translate-y-0 active:scale-[0.99];
   }
   .chip {
-    @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-1.5 text-sm font-medium text-ink-600 transition hover:border-ink-300 hover:text-ink-900;
+    @apply inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 text-[13px] font-medium text-ink-600 shadow-soft transition hover:-translate-y-0.5 hover:border-ink-300 hover:text-ink-900 hover:shadow-card;
   }
   .chip-active {
-    @apply border-ink-900 bg-ink-900 text-white hover:border-ink-900 hover:text-white;
+    @apply border-ink-900 bg-ink-900 text-white shadow-press hover:border-ink-900 hover:text-white;
   }
   .card-surface {
-    @apply rounded-2xl bg-white ring-1 ring-ink-100;
+    @apply rounded-2xl bg-white ring-1 ring-ink-100 shadow-soft;
   }
   .eyebrow {
-    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-brand;
+    @apply text-[10px] font-semibold uppercase tracking-[0.18em] text-brand sm:text-[11px];
   }
   .section-title {
-    @apply text-xl font-bold tracking-tight text-ink-900 sm:text-2xl;
+    @apply text-[19px] font-bold leading-snug tracking-tight text-ink-900 sm:text-2xl;
   }
 }
 

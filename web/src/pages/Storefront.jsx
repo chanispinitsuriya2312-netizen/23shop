@@ -94,18 +94,18 @@ export default function Storefront() {
   return (
     <div className="min-h-screen">
       <FlashSalePopup />
-      <div className="bg-ink-900 px-4 py-2 text-center text-[12px] font-medium tracking-wide text-white/90">
+      <div className="bg-ink-900 px-4 py-2 text-center text-xs font-medium tracking-wide text-white/90">
         {settings.announcement || 'ส่งฟรีเมื่อซื้อครบ ฿1,000 · จัดส่งทั่วไทย 1–3 วันทำการ'}
       </div>
       <Navbar search={search} onSearch={setSearch} />
 
       <main className="mx-auto max-w-6xl px-4 pb-10">
         {/* Hero */}
-        <section className="mt-4 overflow-hidden rounded-[2rem] border border-ink-100 bg-white">
-          <div className="grid items-center gap-8 p-6 sm:p-10 lg:grid-cols-2 lg:p-12">
+        <section className="mt-4 overflow-hidden rounded-[2rem] border border-ink-100 bg-white shadow-lift">
+          <div className="grid items-center gap-8 p-5 sm:p-10 lg:grid-cols-2 lg:p-12">
             <div>
               <p className="eyebrow">ShopHub · คัดสรรเพื่อคุณ</p>
-              <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-ink-900 sm:text-4xl lg:text-[2.75rem]">
+              <h1 className="mt-3 text-[30px] font-extrabold leading-[1.15] tracking-tight text-ink-900 sm:text-4xl lg:text-[2.75rem]">
                 ของดีที่คัดมาแล้ว
                 <br />
                 <span className="text-brand">พร้อมส่งถึงบ้าน</span>
@@ -114,18 +114,18 @@ export default function Storefront() {
                 สินค้าคุณภาพคัดสรรทุกชิ้น ส่งไว ราคายุติธรรม — สั่งซื้อออนไลน์ได้เลย ไม่ต้องโหลดแอป
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href="#products" className="btn-primary px-6 py-3">ช้อปเลย</a>
-                {saleLive && <a href="#sale" className="btn-outline px-6 py-3">🔥 ดูโปรโมชัน</a>}
+                <a href="#products" className="btn-primary px-6">ช้อปเลย</a>
+                {saleLive && <a href="#sale" className="btn-outline px-6">🔥 ดูโปรโมชัน</a>}
               </div>
-              <dl className="mt-8 grid max-w-sm grid-cols-3 gap-4 border-t border-ink-100 pt-5">
+              <dl className="mt-8 grid max-w-sm grid-cols-3 gap-3 border-t border-ink-100 pt-5">
                 {[
                   ['1–3 วัน', 'จัดส่งไว'],
                   ['100%', 'ของแท้'],
                   ['7 วัน', 'คืนได้']
                 ].map(([v, k]) => (
                   <div key={k}>
-                    <dt className="text-lg font-extrabold text-ink-900">{v}</dt>
-                    <dd className="text-xs text-ink-400">{k}</dd>
+                    <dt className="text-lg font-extrabold leading-none text-ink-900">{v}</dt>
+                    <dd className="mt-1 text-xs text-ink-400">{k}</dd>
                   </div>
                 ))}
               </dl>
@@ -134,25 +134,25 @@ export default function Storefront() {
             {hero && (
               <Link to={`/product/${hero.id}`} className="relative block">
                 <div className="grid grid-cols-3 grid-rows-2 gap-3">
-                  <div className="col-span-2 row-span-2 overflow-hidden rounded-3xl bg-ink-50">
+                  <div className="col-span-2 row-span-2 overflow-hidden rounded-3xl bg-ink-50 shadow-soft">
                     <img
                       src={heroImages[0]?.url || hero.imageUrl}
                       alt={hero.title}
                       className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"
                     />
                   </div>
-                  <div className="overflow-hidden rounded-3xl bg-ink-50">
+                  <div className="overflow-hidden rounded-3xl bg-ink-50 shadow-soft">
                     <img
                       src={heroImages[1]?.url || hero.imageUrl}
                       alt=""
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="flex flex-col justify-between rounded-3xl bg-ink-900 p-3 text-white">
+                  <div className="flex flex-col justify-between rounded-3xl bg-ink-900 p-3 text-white shadow-soft">
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/60">แนะนำ</span>
                     <div>
-                      <p className="line-clamp-2 text-[11px] font-medium leading-snug">{hero.title}</p>
-                      <p className="mt-1 text-sm font-bold text-brand-light">{baht(hero.price)}</p>
+                      <p className="line-clamp-2 text-xs font-medium leading-snug">{hero.title}</p>
+                      <p className="mt-1 text-base font-bold leading-none text-brand-light">{baht(hero.price)}</p>
                     </div>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export default function Storefront() {
 
         {/* Flash sale */}
         {saleLive && sale.length > 0 && (
-          <section id="sale" className="mt-8 rounded-[2rem] border border-brand/20 bg-gradient-to-br from-brand/[0.06] to-white p-5 sm:p-7">
+          <section id="sale" className="mt-8 rounded-[2rem] border border-brand/20 bg-gradient-to-br from-brand/[0.06] to-white p-4 shadow-soft sm:p-7">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="eyebrow">Flash Sale</p>
@@ -189,7 +189,7 @@ export default function Storefront() {
                   [cd.minutes, 'นาที'],
                   [cd.seconds, 'วินาที']
                 ].map(([v, label]) => (
-                  <div key={label} className="min-w-[3.4rem] rounded-xl bg-ink-900 px-2 py-1.5 text-center text-white">
+                  <div key={label} className="min-w-[3.4rem] rounded-xl bg-ink-900 px-2 py-1.5 text-center text-white shadow-press">
                     <p className="text-lg font-extrabold leading-none tabular-nums">{pad(v)}</p>
                     <p className="mt-0.5 text-[10px] text-white/50">{label}</p>
                   </div>
@@ -198,12 +198,12 @@ export default function Storefront() {
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {sale.map((p) => (
-                <Link key={p.id} to={`/product/${p.id}`} className="group card-surface overflow-hidden p-2">
+                <Link key={p.id} to={`/product/${p.id}`} className="group card-surface overflow-hidden p-2 transition hover:-translate-y-1 hover:shadow-card">
                   <div className="aspect-square overflow-hidden rounded-xl bg-ink-50">
                     <img src={p.imageUrl} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   </div>
-                  <p className="mt-2 line-clamp-1 text-xs font-medium text-ink-600">{p.title}</p>
-                  <p className="text-sm font-extrabold text-brand">{baht(p.price)}</p>
+                  <p className="mt-2 line-clamp-1 text-sm font-medium text-ink-600">{p.title}</p>
+                  <p className="text-base font-extrabold leading-tight text-brand">{baht(p.price)}</p>
                 </Link>
               ))}
             </div>
@@ -260,7 +260,7 @@ export default function Storefront() {
         </section>
 
         {/* Trust */}
-        <section className="mt-12 grid gap-3 rounded-[2rem] border border-ink-100 bg-white p-6 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mt-12 grid gap-3 rounded-[2rem] border border-ink-100 bg-white p-5 shadow-soft sm:grid-cols-2 sm:p-6 lg:grid-cols-4">
           {[
             ['ส่งไว', 'จัดส่งทั่วไทย 1–3 วันทำการ'],
             ['ของแท้ 100%', 'คัดสรรจากแหล่งที่เชื่อถือได้'],

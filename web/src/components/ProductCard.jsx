@@ -100,7 +100,7 @@ export default function ProductCard({ product, campaign, showStock = true }) {
 
       <div className="flex flex-1 flex-col p-3.5">
         <Link to={`/product/${product.id}`} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-          <h3 className="line-clamp-2 min-h-[2.6rem] text-[13.5px] font-medium leading-snug text-ink-700 transition group-hover:text-ink-900">
+          <h3 className="line-clamp-2 min-h-[2.75rem] text-sm font-medium leading-snug text-ink-700 transition group-hover:text-ink-900">
             {product.title}
           </h3>
         </Link>
@@ -112,9 +112,9 @@ export default function ProductCard({ product, campaign, showStock = true }) {
           )}
         </div>
 
-        <div className="mt-1 flex items-center justify-between text-[11px] text-ink-400">
+        <div className="mt-1 flex items-center justify-between text-xs text-ink-400">
           <span className="inline-flex items-center gap-1">
-            <svg className="h-3 w-3 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z" />
             </svg>
             {product.rating || '-'}
@@ -134,7 +134,7 @@ export default function ProductCard({ product, campaign, showStock = true }) {
             toast.success(`เพิ่ม "${product.title}" ลงตะกร้าแล้ว`)
           }}
           disabled={soldOut}
-          className="mt-3 w-full rounded-xl bg-ink-900 py-2.5 text-sm font-semibold text-white transition hover:bg-brand disabled:cursor-not-allowed disabled:bg-ink-200 disabled:text-ink-400"
+          className="mt-3 w-full rounded-xl bg-ink-900 py-2.5 text-sm font-semibold text-white shadow-press transition duration-150 hover:-translate-y-0.5 hover:bg-brand hover:shadow-lift active:translate-y-0 active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-ink-200 disabled:text-ink-400 disabled:shadow-none"
         >
           {soldOut ? 'สินค้าหมด' : 'เพิ่มลงตะกร้า'}
         </button>

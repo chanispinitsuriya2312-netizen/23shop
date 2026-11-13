@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import MediaGallery from '../components/MediaGallery'
 import ProductCard from '../components/ProductCard'
+import ChannelIcon from '../components/ChannelIcon'
 import ReviewList from '../components/ReviewList'
 import ReviewForm from '../components/ReviewForm'
 import { subscribeProducts, productMedia } from '../lib/shop'
@@ -273,39 +274,50 @@ export default function ProductDetail() {
               <button
                 onClick={() => handleAdd(false)}
                 disabled={soldOut}
-                className="flex-1 rounded-2xl border-2 border-brand py-3 font-semibold text-brand transition hover:bg-brand/5 disabled:opacity-50"
+                className="flex-1 rounded-2xl border-2 border-brand bg-white py-3 font-semibold text-brand shadow-soft transition hover:-translate-y-0.5 hover:bg-brand/5 hover:shadow-card active:translate-y-0 active:scale-[0.99] disabled:opacity-50"
               >
                 เพิ่มลงตะกร้า
               </button>
               <button
                 onClick={() => handleAdd(true)}
                 disabled={soldOut}
-                className="flex-1 rounded-2xl bg-brand py-3 font-semibold text-white transition hover:bg-brand-dark disabled:opacity-50"
+                className="flex-1 rounded-2xl bg-brand py-3 font-semibold text-white shadow-press transition hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-lift active:translate-y-0 active:scale-[0.99] disabled:opacity-50"
               >
                 ซื้อเลย
               </button>
             </div>
 
             {/* Share */}
-            <div className="mt-4 flex items-center gap-2 text-xs text-ink-400">
-              <span>แชร์:</span>
-              <a
+            <div className="mt-5 flex items-center gap-2">
+              <span className="mr-1 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-400">แชร์</span>
+              <ShareIcon
+                label="แชร์ผ่าน LINE"
+                name="line"
                 href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(pageUrl)}&text=${shareText}`}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg bg-[#06c755]/10 px-2.5 py-1.5 font-semibold text-[#06a648] hover:bg-[#06c755]/20"
-              >
-                LINE
-              </a>
-              <a
+                color="#06c755"
+              />
+              <ShareIcon
+                label="แชร์ผ่าน Messenger"
+                name="messenger"
+                href={`https://www.facebook.com/dialog/send?link=${encodeURIComponent(pageUrl)}&app_id=291494419107518&redirect_uri=${encodeURIComponent(pageUrl)}`}
+                color="#0084ff"
+              />
+              <ShareIcon
+                label="แชร์ผ่าน Facebook"
+                name="facebook"
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg bg-[#1877f2]/10 px-2.5 py-1.5 font-semibold text-[#1877f2] hover:bg-[#1877f2]/20"
-              >
-                Facebook
-              </a>
-              <button
+                color="#1877f2"
+              />
+              <ShareIcon
+                label="แชร์ผ่าน WhatsApp"
+                name="whatsapp"
+                href={`https://wa.me/?text=${encodeURIComponent(`${product.title} ${pageUrl}`)}`}
+                color="#25d366"
+              />
+              <ShareIcon
+                label="คัดลอกลิงก์"
+                name="copy"
+                color="#3f3833"
                 onClick={async () => {
                   try {
                     await navigator.clipboard.writeText(pageUrl)
@@ -314,10 +326,7 @@ export default function ProductDetail() {
                     toast.error('คัดลอกไม่สำเร็จ')
                   }
                 }}
-                className="rounded-lg bg-ink-100 px-2.5 py-1.5 font-semibold text-ink-500 hover:bg-ink-200"
-              >
-                คัดลอกลิงก์
-              </button>
+              />
             </div>
 
             {/* Tabs */}
@@ -407,14 +416,14 @@ export default function ProductDetail() {
           <button
             onClick={() => handleAdd(false)}
             disabled={soldOut}
-            className="rounded-xl border-2 border-brand px-4 py-2.5 text-sm font-semibold text-brand disabled:opacity-50"
+            className="rounded-xl border-2 border-brand bg-white px-4 py-2.5 text-sm font-semibold text-brand shadow-soft disabled:opacity-50"
           >
             ใส่ตะกร้า
           </button>
           <button
             onClick={() => handleAdd(true)}
             disabled={soldOut}
-            className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+            className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-press disabled:opacity-50"
           >
             ซื้อเลย
           </button>
@@ -423,6 +432,24 @@ export default function ProductDetail() {
 
       <Footer />
     </div>
+  )
+}
+
+function ShareIcon({ label, name, href, onClick, color }) {
+  const cls =
+    'grid h-9 w-9 place-items-center rounded-full ring-1 ring-black/[0.04] shadow-soft transition hover:-translate-y-0.5 hover:shadow-card active:translate-y-0 active:scale-95'
+  const style = { backgroundColor: `${color}14`, color }
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" aria-label={label} title={label} className={cls} style={style}>
+        <ChannelIcon name={name} size={17} />
+      </a>
+    )
+  }
+  return (
+    <button type="button" onClick={onClick} aria-label={label} title={label} className={cls} style={style}>
+      <ChannelIcon name={name} size={17} />
+    </button>
   )
 }
 

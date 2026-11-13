@@ -15,6 +15,19 @@ export const defaultSettings = {
   facebook: 'https://facebook.com/shophub',
   instagram: 'https://instagram.com/shophub',
   announcement: 'ส่งฟรีเมื่อซื้อครบ ฿1,000 · จัดส่งทั่วไทย 1–3 วันทำการ',
+  // Contact channels for the floating contact rail. Editable in Settings.
+  contactChannels: [
+    { type: 'line', label: 'LINE', value: '@shophub', enabled: true },
+    { type: 'phone', label: 'โทรสั่งซื้อ', value: '081-234-5678', enabled: true },
+    { type: 'messenger', label: 'Messenger', value: 'shophub', enabled: true },
+    { type: 'facebook', label: 'Facebook', value: 'https://facebook.com/shophub', enabled: true },
+    { type: 'instagram', label: 'Instagram', value: 'https://instagram.com/shophub', enabled: true },
+    { type: 'tiktok', label: 'TikTok', value: 'https://tiktok.com/@shophub', enabled: true },
+    { type: 'shopee', label: 'Shopee', value: 'https://shopee.co.th/shophub', enabled: true },
+    { type: 'lazada', label: 'Lazada', value: 'https://lazada.co.th/shophub', enabled: true },
+    { type: 'email', label: 'อีเมล', value: 'shop@shophub.co', enabled: true },
+    { type: 'map', label: 'แผนที่ร้าน', value: 'กรุงเทพมหานคร', enabled: true }
+  ],
   // Delivery
   shippingFee: 40,
   freeShippingMin: 1000,
