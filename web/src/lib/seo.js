@@ -32,7 +32,7 @@ function upsertLink(rel, href) {
  * Sets <title>, description, canonical, Open Graph, Twitter Card and an
  * optional JSON-LD structured-data block (e.g. Product / Store schema).
  */
-export function useSeo({ title, description, canonical, image, type = 'website', jsonLd } = {}) {
+export function useSeo({ title, description, canonical, image, type = 'website', jsonLd, breadcrumbs } = {}) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} — ร้านค้าออนไลน์`
     const desc = description || DEFAULT_DESC
@@ -56,7 +56,10 @@ export function useSeo({ title, description, canonical, image, type = 'website',
     upsertMeta('name', 'twitter:image', img)
 
     const id = 'ld-json-page'
+    const breadcrumbId = 'ld-json-breadcrumb'
     document.getElementById(id)?.remove()
+    document.getElementById(breadcrumbId)?.remove()
+
     if (jsonLd) {
       const script = document.createElement('script')
       script.type = 'application/ld+json'
@@ -64,8 +67,28 @@ export function useSeo({ title, description, canonical, image, type = 'website',
       script.text = JSON.stringify(jsonLd)
       document.head.appendChild(script)
     }
-    return () => document.getElementById(id)?.remove()
-  }, [title, description, canonical, image, type, JSON.stringify(jsonLd)])
+
+    if (breadcrumbs?.length) {
+      const script = document.createElement('script')
+      script.type = 'application/ld+json'
+      script.id = breadcrumbId
+      script.text = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((b, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: b.name,
+          item: b.path ? `${SITE_URL}${b.path}` : undefined
+        }))
+      })
+      document.head.appendChild(script)
+    }
+    return () => {
+      document.getElementById(id)?.remove()
+      document.getElementById(breadcrumbId)?.remove()
+    }
+  }, [title, description, canonical, image, type, JSON.stringify(jsonLd), JSON.stringify(breadcrumbs)])
 }
 
 export const seoConfig = { SITE_NAME, SITE_URL, DEFAULT_DESC, DEFAULT_IMAGE }

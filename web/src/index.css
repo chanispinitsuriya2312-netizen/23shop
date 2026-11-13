@@ -2,26 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .input {
-    @apply w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20;
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink-900;
+  }
+  ::selection {
+    @apply bg-brand/20;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand/50 ring-offset-2 ring-offset-cream;
   }
 }
 
-:root {
-  color-scheme: light;
-}
-
-html,
-body {
-  margin: 0;
-  font-family: 'Inter', 'Noto Sans Thai', system-ui, sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
-}
-
-* {
-  -webkit-tap-highlight-color: transparent;
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-ink-200 bg-white px-3 py-2.5 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-brand focus:ring-2 focus:ring-brand/20;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-ink-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-xl border border-ink-200 bg-white px-5 py-2.5 text-sm font-semibold text-ink-700 transition hover:border-brand hover:text-brand active:scale-[0.98];
+  }
+  .chip {
+    @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-1.5 text-sm font-medium text-ink-600 transition hover:border-ink-300 hover:text-ink-900;
+  }
+  .chip-active {
+    @apply border-ink-900 bg-ink-900 text-white hover:border-ink-900 hover:text-white;
+  }
+  .card-surface {
+    @apply rounded-2xl bg-white ring-1 ring-ink-100;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-brand;
+  }
+  .section-title {
+    @apply text-xl font-bold tracking-tight text-ink-900 sm:text-2xl;
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -44,4 +66,17 @@ body {
 @keyframes toastIn {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

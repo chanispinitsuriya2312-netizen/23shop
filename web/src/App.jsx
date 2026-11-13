@@ -1,30 +1,67 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Storefront from './pages/Storefront'
-import ProductDetail from './pages/ProductDetail'
-import Cart from './pages/Cart'
-import Checkout from './pages/Checkout'
-import AccountLogin from './pages/AccountLogin'
-import AdminLogin from './pages/AdminLogin'
-import AdminDashboard from './pages/AdminDashboard'
+import { lazy, Suspense, useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+
+const Storefront = lazy(() => import('./pages/Storefront'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+const Cart = lazy(() => import('./pages/Cart'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const Info = lazy(() => import('./pages/Info'))
+const Track = lazy(() => import('./pages/Track'))
+const AccountLogin = lazy(() => import('./pages/AccountLogin'))
+const AdminLogin = lazy(() => import('./pages/AdminLogin'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+
+function ScrollToTop() {
+  const { pathname, hash, search } = useLocation()
+  useEffect(() => {
+    if (hash) {
+      const el = document.querySelector(hash)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+    }
+    window.scrollTo(0, 0)
+  }, [pathname, hash, search])
+  return null
+}
+
+function PageLoader() {
+  return (
+    <div className="grid min-h-[60vh] place-items-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-ink-200 border-t-brand" />
+    </div>
+  )
+}
 
 export default function App() {
   return (
-    <Routes>
-      {/* โซนลูกค้า (Storefront) */}
-      <Route path="/" element={<Storefront />} />
-      <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
+    <>
+      <ScrollToTop />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* โซนลูกค้า (Storefront) */}
+          <Route path="/" element={<Storefront />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/track" element={<Track />} />
+          <Route path="/about" element={<Info />} />
+          <Route path="/contact" element={<Info />} />
+          <Route path="/policy" element={<Info />} />
+          <Route path="/policy/:slug" element={<Info />} />
 
-      {/* โซนสมาชิกลูกค้า /account/* (จองพื้นที่ไว้ — อนาคต) */}
-      <Route path="/account/login" element={<AccountLogin />} />
-      <Route path="/account" element={<Navigate to="/account/login" replace />} />
+          {/* โซนสมาชิกลูกค้า /account/* (จองพื้นที่ไว้ — อนาคต) */}
+          <Route path="/account/login" element={<AccountLogin />} />
+          <Route path="/account" element={<Navigate to="/account/login" replace />} />
 
-      {/* โซนผู้ดูแลระบบ /admin/* (แยกจากลูกค้า) */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin" element={<AdminDashboard />} />
+          {/* โซนผู้ดูแลระบบ /admin/* (แยกจากลูกค้า) */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+    </>
   )
 }
