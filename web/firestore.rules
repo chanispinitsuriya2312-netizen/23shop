@@ -35,16 +35,39 @@ service cloud.firestore {
     }
 
     // Coupons: public read so checkout can validate a code; only admins write.
+    // A guest checkout may only bump usedCount by exactly 1 (never past the
+    // configured usageLimit) alongside updatedAt.
     match /coupons/{code} {
       allow read: if true;
       allow create, delete: if request.auth != null;
-      allow update: if request.auth != null;
+      allow update: if request.auth != null
+        || (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['usedCount', 'updatedAt'])
+          && request.resource.data.usedCount == resource.data.get('usedCount', 0) + 1
+          && (
+            resource.data.get('usageLimit', 0) == 0
+            || request.resource.data.usedCount <= resource.data.get('usageLimit', 0)
+          )
+        );
     }
 
-    // Public order tracking (PII-free mirror): anyone may read; only admins write.
+    // Public order tracking (PII-free mirror): anyone may read. Guests may only
+    // open the mirror for a brand-new order (status 'Order Placed', empty
+    // courier/tracking, no repeated status history); everything else is admin.
     match /tracking/{orderCode} {
       allow read: if true;
-      allow create, update, delete: if request.auth != null;
+      allow create: if request.auth != null
+        || (
+          request.resource.data.keys().hasOnly(['orderCode', 'status', 'statusHistory', 'courier', 'trackingNumber', 'itemsCount', 'updatedAt'])
+          && request.resource.data.orderCode == orderCode
+          && request.resource.data.status == 'Order Placed'
+          && request.resource.data.courier == ''
+          && request.resource.data.trackingNumber == ''
+          && request.resource.data.statusHistory.size() <= 1
+          && request.resource.data.itemsCount is int
+          && request.resource.data.itemsCount >= 0
+        );
+      allow update, delete: if request.auth != null;
     }
 
     // Reviews: public read (client filters approved), guests may submit an
